@@ -1,48 +1,50 @@
-import React, { useState, useEffect } from 'react';
-import moment from 'moment';
-import logo from './logo.svg';
+import { useEffect } from 'react';
+
+import MovieCard from './MovieCard';
+
 import './App.css';
+import SearchIcon from './search.svg';
 
-function App() {
-  const [currentTime, setCurrentTime] = useState("");
+const movie1 = {
+    "Poster": "https://m.media-amazon.com/images/M/MV5BMjQ4MzcxNDU3N15BMl5BanBnXkFtZTgwOTE1MzMxNzE@._V1_SX300.jpg",
+    "Title": "Superman, Spiderman or Batman",
+    "Type": "movie",
+    "Year": "2011",
+    "imdbID": "tt2084949"
+}
 
-
+const App = () => {
+  const searchMovies = async (title) => {
+    const response = await fetch(`/movies/${title}`);
+    const data = await response.json();
+    console.log(data);
+  }
 
   useEffect(() => {
-    const getData = async()=> {
-      fetch('/time').then(res => res.json()).then(data => {
-        console.log(data);
-        setCurrentTime(data.time);
-      });
-    }
-
-    getData();
-
-    const interval = setInterval(()=> {
-      getData();
-    }, 10000);
-    return () => clearInterval(interval);
-  }, []);
+    searchMovies('Spiderman');
+  }, [])
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-        <p>The current time is {currentTime}.</p>
-      </header>
+    <div className="app">
+      <h1>MovieLand</h1>
+
+      <div className="search">
+        <input placeholder="Search for movies"
+               value="Superman"
+               onChange={() => {}}
+        />
+        <img src={SearchIcon}
+             alt="search"
+             onClick={() => {}}
+        />
+      </div>
+
+      <div className="container">
+        <MovieCard movie1={movie1} />
+      </div>
     </div>
-  );
+  )
+
 }
 
 export default App;
